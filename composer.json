@@ -1,0 +1,39 @@
+{
+  "name": "ultron/fixturepref",
+  "description": "Helper for manipulating with fixtures pref's",
+  "type": "library",
+  "license": "MIT",
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "Illia Dulaiev",
+      "email": "illia.dulaiev@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "~8.1.0 || ~8.2.0"
+  },
+  "require-dev": {
+    "lcobucci/coding-standard": "^9.0",
+    "phpunit/phpunit": "^9.5.27",
+    "roave/security-advisories": "dev-latest",
+    "vimeo/psalm": "^5.12"
+  },
+  "autoload": {
+    "psr-4": {
+      "ultron\\FixturePref\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ultron\\FixturePref\\": "tests"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}
