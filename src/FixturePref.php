@@ -30,17 +30,19 @@ final class FixturePref
             self::setGenerator(new RandomBytesGenerator());
         }
 
-        if (!array_key_exists(key: $key->value, array: self::$pref)) {
-            self::$pref[$key->value] = [];
+        $arrayKey = $key->name;
+
+        if (!array_key_exists(key: $arrayKey, array: self::$pref)) {
+            self::$pref[$arrayKey] = [];
         }
 
-        if (!array_key_exists($subKey, self::$pref[$key->value])) {
-            self::$pref[$key->value][$subKey] = [];
+        if (!array_key_exists($subKey, self::$pref[$arrayKey])) {
+            self::$pref[$arrayKey][$subKey] = [];
         }
 
         $id = self::$generator->createId();
 
-        self::$pref[$key->value][$subKey][] = $id;
+        self::$pref[$arrayKey][$subKey][] = $id;
 
         return $id;
     }
@@ -50,8 +52,10 @@ final class FixturePref
      */
     public static function getAllPref(UnitEnum $key, string $subKey = 'default'): array
     {
-        if (array_key_exists($key->value, self::$pref)) {
-            return self::$pref[$key->value][$subKey];
+        $arrayKey = $key->name;
+
+        if (array_key_exists($arrayKey, self::$pref)) {
+            return self::$pref[$arrayKey][$subKey];
         }
 
         return [];
@@ -59,11 +63,13 @@ final class FixturePref
 
     public static function getRandomPref(UnitEnum $key, string $subKey = 'default'): ?string
     {
-        if (array_key_exists($key->value, self::$pref)) {
-            $count = count(self::$pref[$key->value][$subKey]);
+        $arrayKey = $key->name;
+
+        if (array_key_exists($arrayKey, self::$pref)) {
+            $count = count(self::$pref[$arrayKey][$subKey]);
 
             try {
-                return self::$pref[$key->value][$subKey][random_int(0, $count - 1)];
+                return self::$pref[$arrayKey][$subKey][random_int(0, $count - 1)];
             } catch (\Exception) {
                 return null;
             }
@@ -72,11 +78,14 @@ final class FixturePref
         return null;
     }
 
-    public static function getRandomOrNullPref(UnitEnum $key, int $percent = 50, string $subKey = 'default'): ?string
-    {
+    public static function getRandomOrNullPref(
+        UnitEnum $key,
+        int $percent = 50,
+        string $subKey = 'default'
+    ): ?string {
         try {
             if (random_int(0, 100) > $percent) {
-                return self::getRandomPref($key, $subKey);
+                return self::getRandomPref(key: $key, subKey: $subKey);
             }
         } catch (\Exception) {
             return null;
@@ -92,8 +101,10 @@ final class FixturePref
 
     public static function clearPref(UnitEnum $key): void
     {
-        if (array_key_exists($key->name, self::$pref)) {
-            unset(self::$pref[$key->name]);
+        $arrayKey = $key->name;
+
+        if (array_key_exists(key: $arrayKey, array: self::$pref)) {
+            unset(self::$pref[$arrayKey]);
         }
     }
     public static function clearAllPref(): void
