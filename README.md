@@ -14,7 +14,7 @@ for example you need to create 10 users
 ## Installation
 
 ```
-composer require --dev ultron/fixturepref
+composer require --dev u1tr0n/fixturepref
 ```
 
 ### TODO
