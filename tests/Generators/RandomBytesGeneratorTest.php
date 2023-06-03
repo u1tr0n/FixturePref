@@ -2,13 +2,14 @@
 
 namespace ultron\FixturePref\Generators;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class RandomBytesGeneratorTest extends TestCase
 {
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function testCreateId(): void
     {

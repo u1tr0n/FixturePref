@@ -2,6 +2,8 @@
 
 namespace ultron\FixturePref\Generators;
 
+use Exception;
+
 final class RandomBytesGenerator implements IdGeneratorInterface
 {
 
@@ -14,7 +16,7 @@ final class RandomBytesGenerator implements IdGeneratorInterface
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function createId(): string
     {

@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace ultron\FixturePref;
+use Exception;
 use ultron\FixturePref\Generators\IdGeneratorInterface;
 use ultron\FixturePref\Generators\RandomBytesGenerator;
 use UnitEnum;
@@ -70,7 +71,7 @@ final class FixturePref
 
             try {
                 return self::$pref[$arrayKey][$subKey][random_int(0, $count - 1)];
-            } catch (\Exception) {
+            } catch (Exception) {
                 return null;
             }
         }
@@ -87,7 +88,7 @@ final class FixturePref
             if (random_int(0, 100) > $percent) {
                 return self::getRandomPref(key: $key, subKey: $subKey);
             }
-        } catch (\Exception) {
+        } catch (Exception) {
             return null;
         }
 

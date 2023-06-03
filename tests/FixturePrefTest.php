@@ -2,6 +2,7 @@
 
 namespace ultron\FixturePref;
 
+use JsonException;
 use PHPUnit\Framework\TestCase;
 use ultron\FixturePref\Generators\RandomBytesGenerator;
 
@@ -76,7 +77,7 @@ class FixturePrefTest extends TestCase
     }
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function testGetRandomOrNullPref(): void
     {
@@ -89,7 +90,7 @@ class FixturePrefTest extends TestCase
 
         for($i=1; $i<=5; $i++){
             $randomPref = FixturePref::getRandomOrNullPref(TestKeyType::TEST_GET_RANDOM_PREF_OR_NULL);
-            $this->assertTrue(null === $randomPref || in_array($randomPref, $results,true), "{$randomPref} not in array [{$strResults}]");
+            $this->assertTrue(null === $randomPref || in_array($randomPref, $results,true), "$randomPref not in array [$strResults]");
         }
     }
 
