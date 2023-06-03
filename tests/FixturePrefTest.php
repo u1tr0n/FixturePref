@@ -11,6 +11,17 @@ class FixturePrefTest extends TestCase
     {
         $this->assertFalse(FixturePref::initGenerator());
     }
+    public function testAddWithoutGenerator(): void
+    {
+        $value = FixturePref::addPref(TestKeyType::TEST_NO_GENERATOR);
+        $this->assertSame(['TEST_NO_GENERATOR' => ['default' => [$value]]],FixturePref::$pref);
+    }
+
+    public function testClearPref(): void
+    {
+        FixturePref::clearPref(TestKeyType::TEST_NO_GENERATOR);
+        $this->assertSame([],FixturePref::$pref);
+    }
 
     public function testSetGenerator(): void
     {
@@ -82,5 +93,10 @@ class FixturePrefTest extends TestCase
         }
     }
 
-
+    public function testClearAllPref(): void
+    {
+        $this->assertNotSame([], FixturePref::$pref);
+        FixturePref::clearAllPref();
+        $this->assertSame([], FixturePref::$pref);
+    }
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace ultron\FixturePref;
 use ultron\FixturePref\Generators\IdGeneratorInterface;
+use ultron\FixturePref\Generators\RandomBytesGenerator;
 use UnitEnum;
 
 final class FixturePref
@@ -25,6 +26,10 @@ final class FixturePref
 
     public static function addPref(UnitEnum $key, string $subKey = 'default'): string
     {
+        if (false === self::$hasGenerator) {
+            self::setGenerator(new RandomBytesGenerator());
+        }
+
         if (!array_key_exists(key: $key->value, array: self::$pref)) {
             self::$pref[$key->value] = [];
         }
@@ -83,5 +88,16 @@ final class FixturePref
     public static function getPref(): array
     {
         return self::$pref;
+    }
+
+    public static function clearPref(UnitEnum $key): void
+    {
+        if (array_key_exists($key->name, self::$pref)) {
+            unset(self::$pref[$key->name]);
+        }
+    }
+    public static function clearAllPref(): void
+    {
+        self::$pref = [];
     }
 }
