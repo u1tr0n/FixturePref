@@ -1,5 +1,7 @@
 # PHP Fixture Pref\'s
 
+[![Support Ukraine Badge](https://bit.ly/support-ukraine-now)](https://github.com/support-ukraine/support-ukraine)
+
 This library help to organize dependencies between different fixtures in project
 
 for example you need to create 10 users
