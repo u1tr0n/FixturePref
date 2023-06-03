@@ -1,5 +1,5 @@
 # PHP Fixture Pref\'s
-
+![https://img.shields.io/github/downloads/u1tr0n/fixturepref/total](https://img.shields.io/github/downloads/u1tr0n/fixturepref/total)
 [![Support Ukraine Badge](https://bit.ly/support-ukraine-now)](https://github.com/support-ukraine/support-ukraine)
 
 This library help to organize dependencies between different fixtures in project
