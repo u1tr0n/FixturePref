@@ -7,4 +7,7 @@
 /composer.lock           export-ignore
 /phpunit.xml.dist        export-ignore
 /psalm.xml.dist          export-ignore
+/psalm.xml               export-ignore
 /.phpunit.result.cache   export-ignore
+/bin                     export-ignore
+/var                     export-ignore
