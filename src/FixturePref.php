@@ -5,6 +5,7 @@ namespace ultron\FixturePref;
 use Exception;
 use ultron\FixturePref\Generators\IdGeneratorInterface;
 use ultron\FixturePref\Generators\RandomBytesGenerator;
+use ultron\FixturePref\Key\PrefKeyInterface;
 use UnitEnum;
 
 final class FixturePref
@@ -25,25 +26,23 @@ final class FixturePref
         return self::$hasGenerator;
     }
 
-    public static function addPref(UnitEnum $key, string $subKey = 'default'): string
+    public static function addPref(PrefKeyInterface $key): string
     {
         if (false === self::$hasGenerator) {
             self::setGenerator(new RandomBytesGenerator());
         }
 
-        $arrayKey = $key->name;
-
-        if (!array_key_exists(key: $arrayKey, array: self::$pref)) {
-            self::$pref[$arrayKey] = [];
+        if (!array_key_exists(key: $key->getGroup(), array: self::$pref)) {
+            self::$pref[$key->getGroup()] = [];
         }
 
-        if (!array_key_exists($subKey, self::$pref[$arrayKey])) {
-            self::$pref[$arrayKey][$subKey] = [];
+        if (!array_key_exists($key->getKey(), self::$pref[$key->getGroup()])) {
+            self::$pref[$key->getGroup()][$key->getKey()] = [];
         }
 
         $id = self::$generator->createId();
 
-        self::$pref[$arrayKey][$subKey][] = $id;
+        self::$pref[$key->getGroup()][$key->getKey()][] = $id;
 
         return $id;
     }
@@ -51,26 +50,27 @@ final class FixturePref
     /**
      * @return array<array-key, string>
      */
-    public static function getAllPref(UnitEnum $key, string $subKey = 'default'): array
+    public static function getAllPref(PrefKeyInterface $key): array
     {
-        $arrayKey = $key->name;
 
-        if (array_key_exists($arrayKey, self::$pref)) {
-            return self::$pref[$arrayKey][$subKey];
+        if (
+            array_key_exists($key->getGroup(), self::$pref)
+            && is_array(self::$pref[$key->getGroup()])
+            && array_key_exists($key->getKey(), self::$pref[$key->getGroup()])
+        ) {
+            return self::$pref[$key->getGroup()][$key->getKey()];
         }
 
         return [];
     }
 
-    public static function getRandomPref(UnitEnum $key, string $subKey = 'default'): ?string
+    public static function getRandomPref(PrefKeyInterface $key): ?string
     {
-        $arrayKey = $key->name;
-
-        if (array_key_exists($arrayKey, self::$pref)) {
-            $count = count(self::$pref[$arrayKey][$subKey]);
+        if (array_key_exists($key->getGroup(), self::$pref)) {
+            $count = count(self::$pref[$key->getGroup()][$key->getKey()]);
 
             try {
-                return self::$pref[$arrayKey][$subKey][random_int(0, $count - 1)];
+                return self::$pref[$key->getGroup()][$key->getKey()][random_int(0, $count - 1)];
             } catch (Exception) {
                 return null;
             }
@@ -80,13 +80,12 @@ final class FixturePref
     }
 
     public static function getRandomOrNullPref(
-        UnitEnum $key,
-        int $percent = 50,
-        string $subKey = 'default'
+        PrefKeyInterface $key,
+        int              $percent = 50,
     ): ?string {
         try {
             if (random_int(0, 100) > $percent) {
-                return self::getRandomPref(key: $key, subKey: $subKey);
+                return self::getRandomPref(key: $key);
             }
         } catch (Exception) {
             return null;
@@ -100,12 +99,20 @@ final class FixturePref
         return self::$pref;
     }
 
-    public static function clearPref(UnitEnum $key): void
+    public static function clearPref(PrefKeyInterface $key): void
     {
-        $arrayKey = $key->name;
+        if (
+            array_key_exists(key: $key->getGroup(), array: self::$pref)
+            && array_key_exists(key: $key->getKey(), array: self::$pref[$key->getGroup()])
+        ) {
+            unset(self::$pref[$key->getGroup()][$key->getKey()]);
+        }
+    }
 
-        if (array_key_exists(key: $arrayKey, array: self::$pref)) {
-            unset(self::$pref[$arrayKey]);
+    public static function clearPrefGroup(PrefKeyInterface $key): void
+    {
+        if (array_key_exists(key: $key->getGroup(), array: self::$pref)) {
+            unset(self::$pref[$key->getGroup()]);
         }
     }
     public static function clearAllPref(): void

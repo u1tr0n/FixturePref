@@ -5,6 +5,7 @@ namespace ultron\FixturePref;
 use JsonException;
 use PHPUnit\Framework\TestCase;
 use ultron\FixturePref\Generators\RandomBytesGenerator;
+use ultron\FixturePref\Key\DefaultPrefPrefKey;
 
 class FixturePrefTest extends TestCase
 {
@@ -14,13 +15,15 @@ class FixturePrefTest extends TestCase
     }
     public function testAddWithoutGenerator(): void
     {
-        $value = FixturePref::addPref(TestKeyType::TEST_NO_GENERATOR);
+        $key = new DefaultPrefPrefKey(TestKeyType::TEST_NO_GENERATOR->value);
+        $value = FixturePref::addPref($key);
         $this->assertSame(['TEST_NO_GENERATOR' => ['default' => [$value]]],FixturePref::$pref);
     }
 
     public function testClearPref(): void
     {
-        FixturePref::clearPref(TestKeyType::TEST_NO_GENERATOR);
+        $key = new DefaultPrefPrefKey(TestKeyType::TEST_NO_GENERATOR->value);
+        FixturePref::clearPrefGroup(key: $key);
         $this->assertSame([],FixturePref::$pref);
     }
 
@@ -33,11 +36,12 @@ class FixturePrefTest extends TestCase
     public function testGetPref(): void
     {
         $this->assertSame([], FixturePref::getPref());
+        $key = new DefaultPrefPrefKey(TestKeyType::TEST_GET_PREF->value);
 
         /** @var array<array-key, string> $results */
         $results = [];
         for ($i = 1; $i<= 10; $i++) {
-            $results[] = FixturePref::addPref(TestKeyType::TEST_GET_PREF);
+            $results[] = FixturePref::addPref($key);
         }
 
         $this->assertSame(["TEST_GET_PREF" => ['default' => $results]], FixturePref::getPref());
@@ -45,33 +49,39 @@ class FixturePrefTest extends TestCase
 
     public function testGetAllPref(): void
     {
+        $key = new DefaultPrefPrefKey(TestKeyType::TEST_GET_ALL_PREF->value);
+
         /** @var array<array-key, string> $results */
         $results = [];
         for ($i = 1; $i<= 10; $i++) {
-            $results[] = FixturePref::addPref(TestKeyType::TEST_GET_ALL_PREF);
+            $results[] = FixturePref::addPref(key: $key);
         }
 
         $this->assertSame(count($results), 10);
-        $this->assertSame($results, FixturePref::getAllPref(TestKeyType::TEST_GET_ALL_PREF));
+        $this->assertSame($results, FixturePref::getAllPref(key: $key));
     }
 
     public function testAddPref(): void
     {
-        $result = FixturePref::addPref(TestKeyType::TEST_ADD_PREF);
+        $key = new DefaultPrefPrefKey(TestKeyType::TEST_ADD_PREF->value);
+
+        $result = FixturePref::addPref($key);
         for ($i = 1; $i<= 10; $i++) {
-            FixturePref::addPref(TestKeyType::TEST_ADD_PREF);
+            FixturePref::addPref($key);
         }
-        $this->assertContains($result, FixturePref::getAllPref(TestKeyType::TEST_ADD_PREF));
+        $this->assertContains($result, FixturePref::getAllPref($key));
     }
 
     public function testGetRandomPref(): void
     {
+        $key = new DefaultPrefPrefKey(TestKeyType::TEST_GET_RANDOM_PREF->value);
+
         $results = [];
         for ($i = 1; $i<= 10; $i++) {
-            $results[] = FixturePref::addPref(TestKeyType::TEST_GET_RANDOM_PREF);
+            $results[] = FixturePref::addPref(key: $key);
         }
 
-        $randomPref = FixturePref::getRandomPref(TestKeyType::TEST_GET_RANDOM_PREF);
+        $randomPref = FixturePref::getRandomPref(key: $key);
 
         $this->assertContains($randomPref, $results);
     }
@@ -81,15 +91,17 @@ class FixturePrefTest extends TestCase
      */
     public function testGetRandomOrNullPref(): void
     {
+        $key = new DefaultPrefPrefKey(TestKeyType::TEST_GET_RANDOM_PREF_OR_NULL->value);
+
         $results = [];
         for($i = 1; $i<= 25; $i++){
-            $results[] = FixturePref::addPref(TestKeyType::TEST_GET_RANDOM_PREF_OR_NULL);
+            $results[] = FixturePref::addPref(key: $key);
         }
 
         $strResults = json_encode($results, JSON_THROW_ON_ERROR);
 
         for($i=1; $i<=5; $i++){
-            $randomPref = FixturePref::getRandomOrNullPref(TestKeyType::TEST_GET_RANDOM_PREF_OR_NULL);
+            $randomPref = FixturePref::getRandomOrNullPref(key: $key);
             $this->assertTrue(null === $randomPref || in_array($randomPref, $results,true), "$randomPref not in array [$strResults]");
         }
     }
