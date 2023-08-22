@@ -4,7 +4,7 @@ namespace ultron\FixturePref\Key;
 
 use ultron\FixturePref\Key\PrefKeyInterface;
 
-final class DefaultPrefPrefKey implements PrefKeyInterface
+final class DefaultPrefKey implements PrefKeyInterface
 {
     public function __construct(
         private readonly string $group,

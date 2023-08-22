@@ -11,25 +11,25 @@ class DefaultPrefKeyTest extends TestCase
 
     public function test__construct(): void
     {
-        $key = new DefaultPrefPrefKey(group: $this->group, name: $this->name);
+        $key = new DefaultPrefKey(group: $this->group, name: $this->name);
         $this->assertSame(expected: $this->group, actual: $key->getGroup());
         $this->assertSame(expected: $this->name, actual: $key->getKey());
     }
 
     public function testGetGroup(): void
     {
-        $key = new DefaultPrefPrefKey(group: $this->group, name: $this->name);
+        $key = new DefaultPrefKey(group: $this->group, name: $this->name);
         $this->assertSame(expected: $this->group, actual: $key->getGroup());
     }
 
     public function testGetKey(): void
     {
-        $key = new DefaultPrefPrefKey(group: $this->group, name: $this->name);
+        $key = new DefaultPrefKey(group: $this->group, name: $this->name);
         $this->assertSame(expected: $this->name, actual: $key->getKey());
     }
     public function testGetDefaultKey(): void
     {
-        $key = new DefaultPrefPrefKey(group: $this->group);
+        $key = new DefaultPrefKey(group: $this->group);
         $this->assertSame(expected: 'default', actual: $key->getKey());
     }
 }

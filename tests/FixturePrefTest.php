@@ -5,7 +5,7 @@ namespace ultron\FixturePref;
 use JsonException;
 use PHPUnit\Framework\TestCase;
 use ultron\FixturePref\Generators\RandomBytesGenerator;
-use ultron\FixturePref\Key\DefaultPrefPrefKey;
+use ultron\FixturePref\Key\DefaultPrefKey;
 
 class FixturePrefTest extends TestCase
 {
@@ -15,14 +15,14 @@ class FixturePrefTest extends TestCase
     }
     public function testAddWithoutGenerator(): void
     {
-        $key = new DefaultPrefPrefKey(TestKeyType::TEST_NO_GENERATOR->value);
+        $key = new DefaultPrefKey(TestKeyType::TEST_NO_GENERATOR->value);
         $value = FixturePref::addPref($key);
         $this->assertSame(['TEST_NO_GENERATOR' => ['default' => [$value]]],FixturePref::$pref);
     }
 
     public function testClearPref(): void
     {
-        $key = new DefaultPrefPrefKey(TestKeyType::TEST_NO_GENERATOR->value);
+        $key = new DefaultPrefKey(TestKeyType::TEST_NO_GENERATOR->value);
         FixturePref::clearPrefGroup(key: $key);
         $this->assertSame([],FixturePref::$pref);
     }
@@ -36,7 +36,7 @@ class FixturePrefTest extends TestCase
     public function testGetPref(): void
     {
         $this->assertSame([], FixturePref::getPref());
-        $key = new DefaultPrefPrefKey(TestKeyType::TEST_GET_PREF->value);
+        $key = new DefaultPrefKey(TestKeyType::TEST_GET_PREF->value);
 
         /** @var array<array-key, string> $results */
         $results = [];
@@ -49,7 +49,7 @@ class FixturePrefTest extends TestCase
 
     public function testGetAllPref(): void
     {
-        $key = new DefaultPrefPrefKey(TestKeyType::TEST_GET_ALL_PREF->value);
+        $key = new DefaultPrefKey(TestKeyType::TEST_GET_ALL_PREF->value);
 
         /** @var array<array-key, string> $results */
         $results = [];
@@ -63,7 +63,7 @@ class FixturePrefTest extends TestCase
 
     public function testAddPref(): void
     {
-        $key = new DefaultPrefPrefKey(TestKeyType::TEST_ADD_PREF->value);
+        $key = new DefaultPrefKey(TestKeyType::TEST_ADD_PREF->value);
 
         $result = FixturePref::addPref($key);
         for ($i = 1; $i<= 10; $i++) {
@@ -74,7 +74,7 @@ class FixturePrefTest extends TestCase
 
     public function testGetRandomPref(): void
     {
-        $key = new DefaultPrefPrefKey(TestKeyType::TEST_GET_RANDOM_PREF->value);
+        $key = new DefaultPrefKey(TestKeyType::TEST_GET_RANDOM_PREF->value);
 
         $results = [];
         for ($i = 1; $i<= 10; $i++) {
@@ -91,7 +91,7 @@ class FixturePrefTest extends TestCase
      */
     public function testGetRandomOrNullPref(): void
     {
-        $key = new DefaultPrefPrefKey(TestKeyType::TEST_GET_RANDOM_PREF_OR_NULL->value);
+        $key = new DefaultPrefKey(TestKeyType::TEST_GET_RANDOM_PREF_OR_NULL->value);
 
         $results = [];
         for($i = 1; $i<= 25; $i++){
